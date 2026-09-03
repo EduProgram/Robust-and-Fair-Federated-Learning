@@ -18,7 +18,6 @@ import argparse
 import torch
 from torch import nn, optim
 from torch.linalg import norm
-from torchtext.data import Batch
 import torch.nn.functional as F
 
 

@@ -3,9 +3,12 @@ import copy
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
-from torchtext.data import Batch
 
 import torch.nn.functional as F
+
+
+def is_text_batch(batch):
+	return hasattr(batch, 'text') and hasattr(batch, 'label')
 
 
 def compute_grad_update(old_model, new_model, device=None):
@@ -88,7 +91,7 @@ def evaluate(model, eval_loader, device, loss_fn=None, verbose=False, label_flip
 	with torch.no_grad():
 		for i, batch in enumerate(eval_loader):
 
-			if isinstance(batch, Batch):
+			if is_text_batch(batch):
 				batch_data, batch_target = batch.text, batch.label
 				# batch_data.data.t_(), batch_target.data.sub_(1)  # batch first, index align
 				batch_data = batch_data.permute(1, 0)
@@ -132,14 +135,13 @@ def evaluate(model, eval_loader, device, loss_fn=None, verbose=False, label_flip
 		print("Loss: {:.6f}. Accuracy: {:.4%}.".format(loss, accuracy))
 	return loss, accuracy
 
-from torchtext.data import Batch
 def train_model(model, loader, loss_fn, optimizer, device, E=1, **kwargs):
 
 	model.train()
 	for e in range(E):
 		# running local epochs
 		for _, batch in enumerate(loader):
-			if isinstance(batch, Batch):
+			if is_text_batch(batch):
 				data, label = batch.text, batch.label
 				data = data.permute(1, 0)
 				# data.data.t_(), label.data.sub_(1)  # batch first, index align

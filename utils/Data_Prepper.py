@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 
 from torchvision.datasets import CIFAR10
-from torchtext.data import Field, LabelField, BucketIterator
+from torchtext.legacy.data import Field, LabelField, BucketIterator
 
 class Data_Prepper:
 	def __init__(self, name, train_batch_size, n_participants, 
@@ -205,13 +205,13 @@ class Data_Prepper:
 
 
 		elif name == "sst":
-			import torchtext.data as data
+			import torchtext.legacy.data as data
 			text_field = data.Field(lower=True)
 			from torch import long as torch_long
 			label_field = LabelField(dtype = torch_long, sequential=False)
 
 
-			import torchtext.datasets as datasets
+			import torchtext.legacy.datasets as datasets
 			train_data, validation_data, test_data = datasets.SST.splits(text_field, label_field, root='datasets/sst', fine_grained=True)
 
 			if self.args_dict['split'] == 'uniform':
@@ -236,7 +236,7 @@ class Data_Prepper:
 
 		elif name == 'mr':
 
-			import torchtext.data as data
+			import torchtext.legacy.data as data
 			from utils import mydatasets
 
 			text_field = data.Field(lower=True)
@@ -270,10 +270,10 @@ class Data_Prepper:
 
 from torchvision.datasets import MNIST
 MNIST.resources = [
-            ('https://ossci-datasets.s3.amazonaws.com/mnist/train-images-idx3-ubyte.gz', 'f68b3c2dcbeaaa9fbdd348bbdeb94873'),
-            ('https://ossci-datasets.s3.amazonaws.com/mnist/train-labels-idx1-ubyte.gz', 'd53e105ee54ea40749a09fcbcd1e9432'),
-            ('https://ossci-datasets.s3.amazonaws.com/mnist/t10k-images-idx3-ubyte.gz', '9fb629c4189551a2d022fa330f9573f3'),
-            ('https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz', 'ec29112dd5afa0611ce80d1b7f02629c')
+			('train-images-idx3-ubyte.gz', 'f68b3c2dcbeaaa9fbdd348bbdeb94873'),
+			('train-labels-idx1-ubyte.gz', 'd53e105ee54ea40749a09fcbcd1e9432'),
+			('t10k-images-idx3-ubyte.gz', '9fb629c4189551a2d022fa330f9573f3'),
+			('t10k-labels-idx1-ubyte.gz', 'ec29112dd5afa0611ce80d1b7f02629c')
         ]
 class FastMNIST(MNIST):
 	def __init__(self, *args, **kwargs):

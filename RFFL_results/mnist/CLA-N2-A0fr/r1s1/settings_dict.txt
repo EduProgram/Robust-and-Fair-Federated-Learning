@@ -1,0 +1,17 @@
+dataset : mnist
+sample_size_cap : 1200
+n_participants : 2
+split : classimbalance
+batch_size : 32
+train_val_split_ratio : 0.9
+alpha : 0.95
+Gamma : 0.5
+model_fn : <class 'utils.models_defined.CNN_Net'>
+optimizer_fn : <class 'torch.optim.sgd.SGD'>
+loss_fn : NLLLoss()
+lr : 0.15
+lr_decay : 0.977
+rounds : 100
+E : 3
+attack : fr
+n_adversaries : 0
